@@ -1,4 +1,4 @@
-name: nbconvert-html-complexes
+name: nbconvert-html-complex
 dependencies:
   - nbconvert
   - pip
