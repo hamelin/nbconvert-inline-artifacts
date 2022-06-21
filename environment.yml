@@ -1,4 +1,4 @@
-name: nbconvert-html-complex
+name: nbconvert-inline-artifacts
 dependencies:
   - flake8
   - mypy
