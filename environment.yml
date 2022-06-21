@@ -1,7 +1,11 @@
 name: nbconvert-html-complex
 dependencies:
-  - nbconvert
+  - flake8
+  - mypy
   - pip
   - python>=3.7
+  - pytest
+  - setuptools
+  - twine
   - pip:
     - -e .
