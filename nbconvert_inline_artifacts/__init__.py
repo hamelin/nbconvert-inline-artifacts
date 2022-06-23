@@ -6,7 +6,7 @@ from typing import Tuple
 
 from nbconvert.preprocessors import Preprocessor, TagRemovePreprocessor
 from nbformat import NotebookNode
-from traitlets import HasTraits, TraitType
+from traitlets import TraitType
 from traitlets.traitlets import Set, Unicode, Dict, Bytes
 
 
@@ -73,7 +73,11 @@ class ArtifactEmbedPreprocessor(Preprocessor):
     hyphens (-). It is resolved using the preprocessor's :attr:`artifacts` map, which
     associates such identifiers to byte strings.
     """
-    artifacts = Dict(Artifact(), default_value={}, help="Resolvable artifacts.")
+    artifacts = Dict(
+        Artifact(),
+        default_value={},
+        help="Resolvable artifacts."
+    ).tag(config=True)
 
     def resolve_artifact(self, m: re.Match) -> str:
         if m["path"] and m["identifier"]:
@@ -92,7 +96,7 @@ class ArtifactEmbedPreprocessor(Preprocessor):
             if m["identifier"] not in self.artifacts:
                 raise UnknownNamedArtifact(m["identifier"])
             artifact = self.artifacts[m["identifier"]]
-            mime_type, content = artifact.mime_type, artifact.content
+            mime_type, content = artifact["mime_type"], artifact["content"]
         else:
             raise RuntimeError("Problem with decoding of artifact descriptors.")
         return f'data:{mime_type};base64,{b64encode(content).decode("ascii")}'
@@ -105,7 +109,10 @@ class ArtifactEmbedPreprocessor(Preprocessor):
     ) -> Tuple[NotebookNode, Dict]:
         tags = set(cell.get("metadata", {}).get("tags", []))
         if "artifact" in tags:
-            source = cell.source
+            if isinstance(cell.source, str):
+                source = cell.source
+            else:
+                source = "".join(cell.source)
             while True:
                 resolved = re.sub(
                     (

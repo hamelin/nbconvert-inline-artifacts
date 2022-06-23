@@ -9,7 +9,7 @@ from . import (  # noqa
     notebook_basic,
     notebook_artifact_fake,
     notebook_artifact_file,
-    notebook_artifacts
+    notebook_artifact_named
 )
 
 
@@ -34,6 +34,11 @@ def test_artifact_cell_removed_despite_no_artifact_string(
     check_notebook_equivalence(notebook_basic, exported)
 
 
-def test_artifacts_all_removed(notebook_basic, notebook_artifacts):  # noqa
-    exported, _ = export_removing_artifacts(notebook_artifacts)
+def test_artifact_file_removed(notebook_basic, notebook_artifact_file):  # noqa
+    exported, _ = export_removing_artifacts(notebook_artifact_file)
+    check_notebook_equivalence(notebook_basic, exported)
+
+
+def test_artifact_named_removed(notebook_basic, notebook_artifact_named):  # noqa
+    exported, _ = export_removing_artifacts(notebook_artifact_named)
     check_notebook_equivalence(notebook_basic, exported)

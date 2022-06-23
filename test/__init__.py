@@ -13,13 +13,24 @@ def export(config: Config, notebook: NotebookNode) -> Tuple[NotebookNode, Dict]:
     return read(StringIO(exported_content), NO_CONVERT), resources
 
 
-def check_notebook_equivalence(ideal, trial):
+def flatten_text(cplx):
+    if isinstance(cplx, list) and len(cplx) > 0 and isinstance(cplx[0], str):
+        return "".join(cplx)
+    elif isinstance(cplx, dict):
+        return {key: flatten_text(value) for key, value in cplx.items()}
+    elif isinstance(cplx, list):
+        return [flatten_text(v) for v in cplx]
+    else:
+        return cplx
+
+
+def check_notebook_equivalence(ideal, trial, idx=[]):
     assert ideal.metadata == trial.metadata
     assert len(ideal.cells) == len(trial.cells)
-    assert all(
-        left.cell_type == right.cell_type
-        for left, right in zip(ideal.cells, trial.cells)
-    )
+    if not idx:
+        idx = range(len(ideal.cells))
+    for i in idx:
+        assert flatten_text(ideal.cells[i]) == flatten_text(trial.cells[i])
 
 
 @pytest.fixture
@@ -120,9 +131,9 @@ def notebook_artifact_fake(notebook_basic):
                     "artifact"
                 ]
             },
-            "source": [
-                "Some more text. No artifact here despite tags.\n",
-            ]
+            "source": (
+                "Some more text. No artifact here despite tags.\n"
+            )
         })
     )
     return nb
@@ -140,17 +151,17 @@ def notebook_artifact_file(notebook_artifact_fake):
                     "artifact"
                 ]
             },
-            "source": [
+            "source": (
                 "Finally a real "
                 """<a href="artifact:image/png:test/some-image.png">artifact</a>!""",
-            ]
+            )
         })
     )
     return nb
 
 
 @pytest.fixture
-def notebook_artifacts(notebook_artifact_fake):
+def notebook_artifact_named(notebook_artifact_fake):
     nb = deepcopy(notebook_artifact_fake)
     nb.cells.append(
         notebook_from_dict({
@@ -161,10 +172,10 @@ def notebook_artifacts(notebook_artifact_fake):
                     "artifact"
                 ]
             },
-            "source": [
+            "source": (
                 """And then one <embed type="application/pdf" src="artifact::my-pdf">"""
                 "from</embed> a map."
-            ]
+            )
         })
     )
     return nb
