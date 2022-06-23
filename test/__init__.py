@@ -1,3 +1,4 @@
+from copy import deepcopy
 from io import StringIO
 from typing import Dict, Tuple
 
@@ -8,7 +9,7 @@ from traitlets.config import Config
 
 
 def export(config: Config, notebook: NotebookNode) -> Tuple[NotebookNode, Dict]:
-    exported_content, resources = NotebookExporter().from_notebook_node(notebook)
+    exported_content, resources = NotebookExporter(config).from_notebook_node(notebook)
     return read(StringIO(exported_content), NO_CONVERT), resources
 
 
@@ -109,7 +110,8 @@ def notebook_basic() -> NotebookNode:
 
 @pytest.fixture
 def notebook_artifact_fake(notebook_basic):
-    notebook_basic.cells.append(
+    nb = deepcopy(notebook_basic)
+    nb.cells.append(
         notebook_from_dict({
             "cell_type": "markdown",
             "id": "c1ea81d3-89d4-4a83-ab2b-cc5ddd2ca6bf",
@@ -123,12 +125,13 @@ def notebook_artifact_fake(notebook_basic):
             ]
         })
     )
-    return notebook_basic
+    return nb
 
 
 @pytest.fixture
 def notebook_artifact_file(notebook_artifact_fake):
-    notebook_artifact_fake.cells.append(
+    nb = deepcopy(notebook_artifact_fake)
+    nb.cells.append(
         notebook_from_dict({
             "cell_type": "markdown",
             "id": "c1ea81d3-89d4-4a83-ab2b-cc5ddd2da6bf",
@@ -143,12 +146,13 @@ def notebook_artifact_file(notebook_artifact_fake):
             ]
         })
     )
-    return notebook_artifact_fake
+    return nb
 
 
 @pytest.fixture
-def notebook_artifacts(notebook_artifact_file):
-    notebook_artifact_file.cells.append(
+def notebook_artifacts(notebook_artifact_fake):
+    nb = deepcopy(notebook_artifact_fake)
+    nb.cells.append(
         notebook_from_dict({
             "cell_type": "markdown",
             "id": "c1ea81dd-89d4-4a83-ab2b-cc5ddd2da6bf",
@@ -163,4 +167,4 @@ def notebook_artifacts(notebook_artifact_file):
             ]
         })
     )
-    return notebook_artifact_file
+    return nb

@@ -16,7 +16,7 @@ from . import (  # noqa
 def export_removing_artifacts(notebook: NotebookNode) -> Tuple[NotebookNode, Dict]:
     c = Config()
     c.NotebookExporter.preprocessors = [
-        "nbcomvert_html_complex.ArtifactRemovePreprocessor"
+        "nbconvert_inline_artifacts.ArtifactRemovePreprocessor"
     ]
     return export(c, notebook)
 

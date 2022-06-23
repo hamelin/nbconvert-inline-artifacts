@@ -6,7 +6,7 @@ from typing import Tuple
 
 from nbconvert.preprocessors import Preprocessor, TagRemovePreprocessor
 from nbformat import NotebookNode
-from traitlets import HasTraits
+from traitlets import HasTraits, TraitType
 from traitlets.traitlets import Set, Unicode, Dict, Bytes
 
 
@@ -43,7 +43,7 @@ class UnknownNamedArtifact(Exception):
     identifier: str
 
 
-class Artifact(HasTraits):
+class Artifact(TraitType):
     info_text = "Binary artifact characterized by its MIME type and composing bytes."
     mime_type = Unicode(
         default_value="application/octet-stream",
@@ -73,7 +73,7 @@ class ArtifactEmbedPreprocessor(Preprocessor):
     hyphens (-). It is resolved using the preprocessor's :attr:`artifacts` map, which
     associates such identifiers to byte strings.
     """
-    artifacts = Dict(Artifact, help="Resolvable artifacts.")
+    artifacts = Dict(Artifact(), default_value={}, help="Resolvable artifacts.")
 
     def resolve_artifact(self, m: re.Match) -> str:
         if m["path"] and m["identifier"]:
