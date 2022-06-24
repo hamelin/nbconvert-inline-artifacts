@@ -1,5 +1,4 @@
 from base64 import b64encode
-from contextlib import contextmanager
 from pathlib import Path
 from typing import Tuple, Dict
 
@@ -29,17 +28,17 @@ def export_substituting_artifacts(
     return export(config, notebook)
 
 
-def test_no_artifact_to_sub(notebook_basic):
+def test_no_artifact_to_sub(notebook_basic):  # noqa
     exported, _ = export_substituting_artifacts(notebook_basic)
     check_notebook_equivalence(notebook_basic, exported)
 
 
-def test_fake_artifact_no_sub(notebook_artifact_fake):
+def test_fake_artifact_no_sub(notebook_artifact_fake):  # noqa
     exported, _ = export_substituting_artifacts(notebook_artifact_fake)
     check_notebook_equivalence(notebook_artifact_fake, exported)
 
 
-def test_sub_artifact_file(notebook_artifact_file):
+def test_sub_artifact_file(notebook_artifact_file):  # noqa
     exported, _ = export_substituting_artifacts(notebook_artifact_file)
     check_notebook_equivalence(
         notebook_artifact_file,
@@ -48,15 +47,15 @@ def test_sub_artifact_file(notebook_artifact_file):
     )
     assert (
         (
-            '<a href="data:image/png;base64,'
-            + b64encode(Path("test/some-image.png").read_bytes()).decode("ascii")
-            + '">artifact</a>'
+            '<a href="data:image/png;base64,' + b64encode(
+                Path("test/some-image.png").read_bytes()
+            ).decode("ascii") + '">artifact</a>'
         )
         in flatten_text(exported.cells[-1]["source"])
     )
 
 
-def test_sub_artifact_named(notebook_artifact_named):
+def test_sub_artifact_named(notebook_artifact_named):  # noqa
     c = Config()
     c.ArtifactEmbedPreprocessor.artifacts = {
         "my-pdf": {
@@ -72,20 +71,23 @@ def test_sub_artifact_named(notebook_artifact_named):
     )
     assert (
         (
-            '<embed type="application/pdf" src="data:application/pdf;base64,'
-            + b64encode(Path("test/example.pdf").read_bytes()).decode("ascii")
-            + '">from</embed>'
+            (
+                '<embed type="application/pdf" '
+                'src="data:application/pdf;base64,'
+            ) + b64encode(
+                Path("test/example.pdf").read_bytes()
+            ).decode("ascii") + '">from</embed>'
         )
         in flatten_text(exported.cells[-1]["source"])
     )
 
 
-def test_sub_artifact_named_absent(notebook_artifact_named):
+def test_sub_artifact_named_absent(notebook_artifact_named):  # noqa
     with pytest.raises(UnknownNamedArtifact):
         export_substituting_artifacts(notebook_artifact_named)
 
 
-def test_sub_artifact_file_absent(notebook_artifact_file):
+def test_sub_artifact_file_absent(notebook_artifact_file):  # noqa
     notebook_artifact_file.cells[-1]["source"] = (
         flatten_text(notebook_artifact_file.cells[-1]["source"]).replace(
             "test/some-image.png",
