@@ -65,13 +65,18 @@ pdf = pdf_exporter.from_filename("document.ipynb")
 
 c_html = Config()
 c_html.Exporter.preprocessors = ["nbconvert_inline_artifacts.ArtifactInlinePreprocessor"]
-c_html.ArtifactInlinePreprocessor.artifacts = {"pdf": pdf}
+c_html.ArtifactInlinePreprocessor.artifacts = {
+    "pdf": {
+        "mime_type": "application/pdf",
+        "content": pdf
+    }
+}
 html_exporter = HTMLExporter(config=c_html)
 with open("document.html", "wb") as file:
     file.write(pdf_exporter.from_filename("document.ipynb"))
 ```
 
-Look [here](examples/fileless_document_conversion/conversion.ipynb) for a larger example.
+Look [here](examples/named_artifacts_scripted/example.ipynb) for a larger example.
 
 ## Development
 
