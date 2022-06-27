@@ -4,28 +4,10 @@ from pathlib import Path
 import re
 from typing import Tuple
 
-from nbconvert.preprocessors import Preprocessor, TagRemovePreprocessor
+from nbconvert.preprocessors import Preprocessor
 from nbformat import NotebookNode
 from traitlets import TraitType
-from traitlets.traitlets import Set, Unicode, Dict, Bytes
-
-
-class ArtifactRemovePreprocessor(TagRemovePreprocessor):
-    """
-    Preprocessor that removes notebook cells that carry the tag ``artifact``. This is
-    useful for producing multiple versions of a notebook rendering: one with, say,
-    a printable PDF copy of the notebook, and a HTML or notebook container. The former
-    would be produced with ``nbconvert`` using this preprocessor, and the latter
-    would instead use the :class:`.ArtifactEmbedPreprocessor`.
-    """
-    remove_cell_tags = Set(
-        Unicode(),
-        default_value=["artifact"],
-        help=(
-            "Tags indicating cells to remove; already configured, change this only if "
-            "you know what you are doing."
-        )
-    )
+from traitlets.traitlets import Unicode, Dict, Bytes
 
 
 @dataclass
