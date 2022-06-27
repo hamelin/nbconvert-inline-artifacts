@@ -12,7 +12,6 @@ from . import (  # noqa
     flatten_text,
     check_notebook_equivalence,
     notebook_basic,
-    notebook_artifact_fake,
     notebook_artifact_file,
     notebook_artifact_named
 )
@@ -31,11 +30,6 @@ def export_substituting_artifacts(
 def test_no_artifact_to_sub(notebook_basic):  # noqa
     exported, _ = export_substituting_artifacts(notebook_basic)
     check_notebook_equivalence(notebook_basic, exported)
-
-
-def test_fake_artifact_no_sub(notebook_artifact_fake):  # noqa
-    exported, _ = export_substituting_artifacts(notebook_artifact_fake)
-    check_notebook_equivalence(notebook_artifact_fake, exported)
 
 
 def test_sub_artifact_file(notebook_artifact_file):  # noqa

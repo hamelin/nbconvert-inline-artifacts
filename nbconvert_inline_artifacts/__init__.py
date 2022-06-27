@@ -89,8 +89,7 @@ class ArtifactEmbedPreprocessor(Preprocessor):
         resources: Dict,
         index: int
     ) -> Tuple[NotebookNode, Dict]:
-        tags = set(cell.get("metadata", {}).get("tags", []))
-        if "artifact" in tags:
+        if cell["cell_type"].lower() == "markdown":
             if isinstance(cell.source, str):
                 source = cell.source
             else:

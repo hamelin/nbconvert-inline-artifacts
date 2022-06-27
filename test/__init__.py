@@ -120,37 +120,13 @@ def notebook_basic() -> NotebookNode:
 
 
 @pytest.fixture
-def notebook_artifact_fake(notebook_basic):
+def notebook_artifact_file(notebook_basic):
     nb = deepcopy(notebook_basic)
     nb.cells.append(
         notebook_from_dict({
             "cell_type": "markdown",
-            "id": "c1ea81d3-89d4-4a83-ab2b-cc5ddd2ca6bf",
-            "metadata": {
-                "tags": [
-                    "artifact"
-                ]
-            },
-            "source": (
-                "Some more text. No artifact here despite tags.\n"
-            )
-        })
-    )
-    return nb
-
-
-@pytest.fixture
-def notebook_artifact_file(notebook_artifact_fake):
-    nb = deepcopy(notebook_artifact_fake)
-    nb.cells.append(
-        notebook_from_dict({
-            "cell_type": "markdown",
             "id": "c1ea81d3-89d4-4a83-ab2b-cc5ddd2da6bf",
-            "metadata": {
-                "tags": [
-                    "artifact"
-                ]
-            },
+            "metadata": {},
             "source": (
                 "Finally a real "
                 """<a href="artifact:image/png:test/some-image.png">artifact</a>!""",
@@ -161,17 +137,13 @@ def notebook_artifact_file(notebook_artifact_fake):
 
 
 @pytest.fixture
-def notebook_artifact_named(notebook_artifact_fake):
-    nb = deepcopy(notebook_artifact_fake)
+def notebook_artifact_named(notebook_basic):
+    nb = deepcopy(notebook_basic)
     nb.cells.append(
         notebook_from_dict({
             "cell_type": "markdown",
             "id": "c1ea81dd-89d4-4a83-ab2b-cc5ddd2da6bf",
-            "metadata": {
-                "tags": [
-                    "artifact"
-                ]
-            },
+            "metadata": {},
             "source": (
                 """And then one <embed type="application/pdf" src="artifact::my-pdf">"""
                 "from</embed> a map."
