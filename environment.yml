@@ -6,6 +6,9 @@ dependencies:
   - python>=3.7
   - pytest
   - setuptools
+  - tqdm
   - twine
+  - wheel
   - pip:
     - -e .
+    - build
