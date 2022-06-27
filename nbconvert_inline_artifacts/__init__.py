@@ -34,7 +34,7 @@ class Artifact(TraitType):
     content = Bytes(help="Contents of the artifact")
 
 
-class ArtifactEmbedPreprocessor(Preprocessor):
+class ArtifactInlinePreprocessor(Preprocessor):
     """
     Preprocessor that substitutes artifact descriptions with a
     ``data:mime/type,base64 ...`` URL. An artifact description itself is a URL-like

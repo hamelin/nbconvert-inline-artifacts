@@ -22,7 +22,7 @@ def export_substituting_artifacts(
     config: Config = Config()
 ) -> Tuple[NotebookNode, Dict]:
     config.NotebookExporter.preprocessors = [
-        "nbconvert_inline_artifacts.ArtifactEmbedPreprocessor"
+        "nbconvert_inline_artifacts.ArtifactInlinePreprocessor"
     ]
     return export(config, notebook)
 
@@ -51,7 +51,7 @@ def test_sub_artifact_file(notebook_artifact_file):  # noqa
 
 def test_sub_artifact_named(notebook_artifact_named):  # noqa
     c = Config()
-    c.ArtifactEmbedPreprocessor.artifacts = {
+    c.ArtifactInlinePreprocessor.artifacts = {
         "my-pdf": {
             "mime_type": "application/pdf",
             "content": Path("test/example.pdf").read_bytes()
