@@ -5,8 +5,14 @@ Web-able documents, typically based on HTML 5, such as ye olde webpage or as Jup
 A common [URL specification](https://datatracker.ietf.org/doc/html/rfc2397) enables such incorporation: the data that make up images or alternative documents is embedded directly as into the URL. Modern web browsers support such *data URLs* fully, either displaying such embedded images as if they were externally linked, or enabling the user to "download" inline documents as if they were hosted remotely.
 However, document authoring tools do not make the addition of such inline artifacts easy. The tools of this project aim at filling this gap when the document being authored is a Jupyter notebook, which can be processed into a form distributable on the web: HTML, Markdown, even merely a modified notebook; using `jupyter nbconvert`
 
-## Specifying artifacts to inline
+## Usage
 
-## Building the final document from the command line
+To use these tools, one first writes up their text as a [Jupyter notebook](https://jupyter.org/try-jupyter/lab/). Even folks who don't require interactive computation can make good, productive use of Jupyter as an authoring environment based on [Markdown](https://www.markdownguide.org/basic-syntax/) notation.
 
-## Scripting the final document build in Python
+### Specifying artifacts to inline
+
+*Inlining* external *artifacts* refers to the incorporation of assets usually stored in external files, such as images and alternative texts, directly in the core document, in the form of [data URLs](https://datatracker.ietf.org/doc/html/rfc2397). 
+
+### Building the final document from the command line
+
+### Scripting the final document build in Python
