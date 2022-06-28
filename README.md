@@ -7,6 +7,14 @@ However, document authoring tools do not make the addition of such inline artifa
 This project aim at filling this gap when the document being authored is a Jupyter notebook, which can be processed into a form distributable on the web: HTML, Markdown, even merely a modified notebook.
 The key consists in a `jupyter nbconvert` [preprocessor](https://nbconvert.readthedocs.io/en/latest/api/preprocessors.html).
 
+## Install
+
+Simple!
+
+```sh
+python -m pip install nbconvert-inline-artifacts
+```
+
 ## Usage
 
 First step is to write up a [Jupyter notebook](https://jupyter.org/try-jupyter/lab/). Even folks who don't require interactive computation can make good, productive use of Jupyter as an authoring environment based on [Markdown](https://www.markdownguide.org/basic-syntax/) notation.
